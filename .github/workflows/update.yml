@@ -13,8 +13,6 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # Fixed floor, not a rolling window: every series from here up stays in the
-  # nightly matrix until this constant is raised.
   MINIMUM_TRACKING_VERSION: "2026.9"
 
 jobs:
