@@ -1,0 +1,29 @@
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Evaluate every advertised system
+        run: |
+          for system in x86_64-linux aarch64-linux aarch64-darwin; do
+            for attr in image update-version update-branches; do
+              nix eval --raw ".#packages.${system}.${attr}.drvPath" >/dev/null
+            done
+          done
+
+      - name: Build the pinned image
+        run: nix build .#image --no-link -L
