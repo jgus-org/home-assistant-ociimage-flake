@@ -52,6 +52,7 @@
               verification = "build";
             };
             update-branches = flake-lib.lib.mkUpdateBranches {
+              minimumTrackingVersion = "2026.9";
               inherit pkgs source;
               pinSchema = "oci";
             };
