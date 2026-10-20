@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     flake-utils.url = "github:numtide/flake-utils";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-lib = {
       url = "github:jgus-org/flake-lib/v1";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,8 +17,10 @@
 
   outputs =
     {
+      self,
       nixpkgs,
       flake-utils,
+      treefmt-nix,
       flake-lib,
       ...
     }:
@@ -39,10 +45,18 @@
         system:
         let
           pkgs = import nixpkgs { inherit system; };
+          treefmtEval = treefmt-nix.lib.evalModule pkgs {
+            projectRootFile = "flake.nix";
+            programs.nixfmt.enable = true;
+          };
           pin = import ./pin.nix;
           image = flake-lib.lib.mkOciImage { inherit pkgs source pin; };
         in
         {
+          formatter = treefmtEval.config.build.wrapper;
+
+          checks.formatting = treefmtEval.config.build.check self;
+
           packages = {
             inherit image;
             default = image;
