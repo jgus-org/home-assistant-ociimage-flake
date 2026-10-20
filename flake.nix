@@ -48,8 +48,6 @@
             default = image;
             update-version = flake-lib.lib.mkUpdateVersion {
               inherit pkgs source;
-              buildAttr = "image";
-              verification = "build";
             };
             update-branches = flake-lib.lib.mkUpdateBranches {
               minimumTrackingVersion = "2026.9";
