@@ -19,7 +19,8 @@ jobs:
 
       - name: Evaluate every advertised system
         run: |
-          for system in x86_64-linux aarch64-linux aarch64-darwin; do
+          systems=$(nix eval .#packages --raw --apply 'x: builtins.concatStringsSep "\n" (builtins.attrNames x)')
+          for system in ${systems}; do
             for attr in image update-version update-branches; do
               nix eval --raw ".#packages.${system}.${attr}.drvPath" >/dev/null
             done
