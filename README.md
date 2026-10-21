@@ -10,7 +10,6 @@ Each release becomes a branch carrying its own pin; aggregates point at the newe
 inputs.home-assistant = {
   url = "github:jgus-org/home-assistant-ociimage-flake";
   inputs.nixpkgs.follows = "nixpkgs";
-  inputs.flake-utils.follows = "flake-utils";
   inputs.flake-lib.follows = "flake-lib";
 };
 ```
@@ -94,7 +93,7 @@ Three files carry distinct responsibilities:
   ```
 
   These three fields are the whole contract. The updater rewrites the file wholesale, so it carries no comments or extra fields.
-- `flake.lock` — the pins for this flake's own inputs (`nixpkgs`, `flake-utils`, `flake-lib`).
+- `flake.lock` — the pins for this flake's own inputs (`nixpkgs`, `flake-lib`).
 
 The published repository commits all three on every branch, so any consumer commit resolves to the exact external resources its lock describes.
 
