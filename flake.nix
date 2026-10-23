@@ -2,33 +2,25 @@
   description = "Version-tree producer for pinned Home Assistant OCI images";
 
   inputs = {
+    flake-lib.url = "github:jgus-org/flake-lib/v1";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    flake-lib = {
-      url = "github:jgus-org/flake-lib/v1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
     {
       self,
-      nixpkgs,
-      treefmt-nix,
       flake-lib,
+      nixpkgs,
       ...
     }:
     let
       source = {
-        type = "oci";
         imageName = "ghcr.io/home-assistant/home-assistant";
+        type = "oci";
         versions = {
-          type = "github";
           owner = "home-assistant";
           repo = "core";
+          type = "github";
         };
       };
     in
@@ -36,28 +28,25 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
-        treefmtEval = treefmt-nix.lib.evalModule pkgs {
-          projectRootFile = "flake.nix";
-          programs.nixfmt.enable = true;
+        orgFormatting = flake-lib.lib.mkFormatting {
+          inherit self system;
         };
         pin = import ./pin.nix;
-        image = flake-lib.lib.mkOciImage { inherit pkgs source pin; };
+        image = flake-lib.lib.mkOciImage { inherit pin pkgs source; };
       in
       {
-        formatter = treefmtEval.config.build.wrapper;
-
-        checks.formatting = treefmtEval.config.build.check self;
-
+        checks.formatting = orgFormatting.check;
+        formatter = orgFormatting.formatter;
         packages = {
           inherit image;
           default = image;
+          update-branches = flake-lib.lib.mkUpdateBranches {
+            inherit pkgs source;
+            minimumTrackingVersion = "2026.9";
+            pinSchema = "oci";
+          };
           update-version = flake-lib.lib.mkUpdateVersion {
             inherit pkgs source;
-          };
-          update-branches = flake-lib.lib.mkUpdateBranches {
-            minimumTrackingVersion = "2026.9";
-            inherit pkgs source;
-            pinSchema = "oci";
           };
         };
       }
