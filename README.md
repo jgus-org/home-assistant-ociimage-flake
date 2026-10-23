@@ -22,9 +22,9 @@ The `follows` lines are optional; omit them to let this flake use its own locked
 
 Track `main` to move with upstream releases, or an exact-version branch or tag to stay put.
 
-| Attribute | Purpose |
-| --- | --- |
-| `image`, `default` | The image derivation pinned on the branch you consume |
+| Attribute                           | Purpose                                                                      |
+| ----------------------------------- | ---------------------------------------------------------------------------- |
+| `image`, `default`                  | The image derivation pinned on the branch you consume                        |
 | `update-version`, `update-branches` | Maintainer tools that keep a branch's pin current; consumers never need them |
 
 ## The image package
@@ -33,13 +33,13 @@ The derivation output is a Skopeo `dir:` transport directory — an OCI layout h
 
 The package carries:
 
-| Attribute | Value |
-| --- | --- |
-| `imageName` | Source reference, including the registry host (`ghcr.io/home-assistant/home-assistant`) |
-| `imageTag` | The pinned release version |
-| `imageDigest` | The pinned platform manifest digest |
-| `copyTo` | Executable: `skopeo copy --preserve-digests dir:<output> <destination>` |
-| `copyToPodman` | Executable: `copyTo containers-storage:<imageName>:<imageTag>` |
+| Attribute      | Value                                                                                   |
+| -------------- | --------------------------------------------------------------------------------------- |
+| `imageName`    | Source reference, including the registry host (`ghcr.io/home-assistant/home-assistant`) |
+| `imageTag`     | The pinned release version                                                              |
+| `imageDigest`  | The pinned platform manifest digest                                                     |
+| `copyTo`       | Executable: `skopeo copy --preserve-digests dir:<output> <destination>`                 |
+| `copyToPodman` | Executable: `copyTo containers-storage:<imageName>:<imageTag>`                          |
 
 `imageTag` is the pinned release version, except on a branch seeded from a newer release whose own image has not resolved yet — that one is tagged by digest until it first resolves.
 
