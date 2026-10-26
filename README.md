@@ -66,6 +66,4 @@ The derivation builds on `x86_64-linux`, `aarch64-linux`, and `aarch64-darwin`, 
 
 The image content is a `linux/amd64` manifest on every build host: the pinned platform is part of this flake's specification, independent of the host that builds it, so a package built on `aarch64-darwin` carries the same amd64 layers and needs emulation to run. The image reference, the platform (`os`, `arch`, optional `variant`), and any local rename of the loaded image are specified in `flake.nix`, not in the pin.
 
-## Licence
-
-Home Assistant Core is licensed under the Apache License 2.0; the image carries its dependencies under theirs. This flake republishes the upstream image by digest and adds no licence grant of its own.
+See [LICENSE.md](LICENSE.md) for licensing and copyright, and [NOTICE.md](NOTICE.md) for the terms of upstream and distributed artifacts.
