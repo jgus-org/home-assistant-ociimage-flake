@@ -1,5 +1,5 @@
 {
-  imageDigest = "sha256:fbbd521bd989893b6c350877d17e1eb1126b6a1bfb715c28e6945f1c82ae0093";
-  imageHash = "sha256-gy2NdC6u3MeQ0KtSRWJZyKGX/q/341+rekCyW5ofkAg=";
-  version = "2026.11.3";
+  imageDigest = "sha256:31076d37e3b7dc9681b32d892aa4413fa866c9a90e5c8a50324b397dce415d17";
+  imageHash = "sha256-c97aX/48uD+OJsHH348K+rhLUZMeb/0hM1KE1uKorTg=";
+  version = "2026.9.1";
 }
